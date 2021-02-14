@@ -1,0 +1,4 @@
+This is non empty file text
+
+
+It contains several lines

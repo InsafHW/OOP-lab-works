@@ -15,14 +15,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Compare.cpp">
+    <ClCompile Include="Invert.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Compare.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <Text Include="matrix.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Test.bat">

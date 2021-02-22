@@ -15,18 +15,11 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Compare.cpp">
+    <ClCompile Include="Live.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Compare.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Test.bat">
-      <Filter>Source Files</Filter>
-    </None>
+    <Text Include="input.txt" />
   </ItemGroup>
 </Project>

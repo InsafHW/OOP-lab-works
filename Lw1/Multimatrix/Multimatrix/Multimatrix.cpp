@@ -33,7 +33,7 @@ matrix ReadMatrix(std::ifstream& file)
 {
     int outterStep = 0;
     std::string temp;
-    matrix matrix = {0};
+    matrix matrix = { 0 };
 
     while (getline(file, temp))
     {
@@ -57,34 +57,47 @@ matrix ReadMatrix(std::ifstream& file)
     return matrix;
 }
 
-void showMatrix(matrix matrix)
+std::optional<matrix> ReadMatrixFromFile(const std::string& fileName)
+{
+    std::ifstream file(fileName);
+    if (!file.is_open())
+    {
+        std::cout << "Failed to open '" << &file << "' for reading\n";
+        return std::nullopt;
+    }
+    matrix matrix = ReadMatrix(file);
+    return matrix;
+}
+
+void ShowMatrix(matrix matrix)
 {
     for (int i = 0; i < 3; i++)
     {
         for (int j = 0; j < 3; j++)
         {
-            std::cout <<  std::fixed << std::setprecision(3) << matrix[i][j] << " ";
+            std::cout << std::fixed << std::setprecision(3) << matrix[i][j];
+            if (j != 2) std::cout << " ";
         }
-        std::cout << std::endl;
+       
+        if (i != 2) std::cout << std::endl;
     }
 }
 
-matrix MatrixMultplier(matrix m1, matrix m2)
+matrix MultiplyMatrix(const matrix& m1, const matrix& m2)
 {
     matrix resultMatrix;
-    double result = 0;
 
     for (int i = 0; i < 3; i++)
     {
         for (int j = 0; j < 3; j++)
         {
+            double result = 0;
             for (int k = 0; k < 3; k++)
             {
                 result += m1[i][k] * m2[k][j];
             }
 
             resultMatrix[i][j] = result;
-            result = 0;
         }
     }
 
@@ -100,29 +113,17 @@ int main(int argc, char* argv[])
     {
         return 1;
     }
-
-    matrix matrix1;
-    matrix matrix2;
     matrix resultMatrix;
+    
+    auto matrix1 = ReadMatrixFromFile(args->matrixFile1);
+    auto matrix2 = ReadMatrixFromFile(args->matrixFile2);
 
-    std::ifstream firstFile(args->matrixFile1);
-    if (!firstFile.is_open())
+    if (!matrix1 || !matrix2)
     {
-        std::cout << "Failed to open '" << args->matrixFile1 << "' for reading\n";
         return 1;
     }
 
-    std::ifstream secondFile(args->matrixFile2);
-    if (!secondFile.is_open())
-    {
-        std::cout << "Failed to open '" << args->matrixFile2 << "' for reading\n";
-        return 1;
-    }
-
-    matrix1 = ReadMatrix(firstFile);
-    matrix2 = ReadMatrix(secondFile);
-
-    resultMatrix = MatrixMultplier(matrix1, matrix2);
-    showMatrix(resultMatrix);
+    resultMatrix = MultiplyMatrix(*matrix1, *matrix2);
+    ShowMatrix(resultMatrix);
     return 0;
 }

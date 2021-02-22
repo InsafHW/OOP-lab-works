@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{b3e02e8e-9547-4bcc-b963-8e4b59ba1ec9}</ProjectGuid>
-    <RootNamespace>Compare</RootNamespace>
+    <ProjectGuid>{44572b96-0703-472b-ae40-7efde4aafe45}</ProjectGuid>
+    <RootNamespace>Invert</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -95,7 +95,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>"$(ProjectDir)" "$(TargetPath)"</Command>
+      <Command>"$(ProjectDir)Test.bat" "$(TargetPath)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -115,7 +115,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>"$(ProjectDir)" "$(TargetPath)"</Command>
+      <Command>"$(ProjectDir)Test.bat" "$(TargetPath)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -131,7 +131,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>"$(ProjectDir)" "$(TargetPath)"</Command>
+      <Command>"$(ProjectDir)Test.bat" "$(TargetPath)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -151,14 +151,14 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>"$(ProjectDir)" "$(TargetPath)"</Command>
+      <Command>"$(ProjectDir)Test.bat" "$(TargetPath)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Compare.cpp" />
+    <ClCompile Include="Invert.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Compare.h" />
+    <Text Include="matrix.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Test.bat" />

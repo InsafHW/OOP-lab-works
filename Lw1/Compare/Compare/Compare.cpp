@@ -73,7 +73,7 @@ int main(int argc, char* argv[])
 
     for (int i = 0; i < maxSteps; i++)
     {
-        if (i >= firstFileLines.size() || i >= secondFileLines.size())
+        if (unsigned(i) >= firstFileLines.size() || unsigned(i) >= secondFileLines.size())
         {
             showDifferentLineMessage(i + 1);
             return 1;

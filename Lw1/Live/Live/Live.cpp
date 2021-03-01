@@ -23,25 +23,34 @@ std::optional<Args> ParseArgs(int argc, char* argv[])
 
     Args args;
 
-    if (argc == 2)
+    args.inputFile = argv[1];
+    args.outputFile = std::nullopt;
+
+    if (argc != 2)
     {
-        args.inputFile = argv[1];
-        args.outputFile = std::nullopt;
-    }
-    else
-    {
-        args.inputFile = argv[1];
         args.outputFile = argv[2];
     }
-
+   
     return args;
+}
+
+void ShowSpace(const Space& space, std::ofstream& outputFile)
+{
+    for (int i = 0; i < space.size(); i++)
+    {
+        for (int j = 0; j < space[i].size(); j++)
+        {
+            outputFile << space[i][j];
+        }
+        outputFile << std::endl;
+    }
 }
 
 void ShowSpace(const Space &space)
 {
     for (int i = 0; i < space.size(); i++)
     {
-        for (int j = 0; j < space.size(); j++)
+        for (int j = 0; j < space[i].size(); j++)
         {
             std::cout << space[i][j];
         }
@@ -49,10 +58,48 @@ void ShowSpace(const Space &space)
     }
 }
 
+int GetNeighbourCount(const Space &s, int Y, int X)
+{
+    int neighbourCount = 0;
+    if (Y - 1 >= 0 && s[Y][X - 1] == '#') // слева от него
+    {
+        neighbourCount++;
+    }
+    if (X + 1 < s[0].size() && s[Y][X + 1] == '#') // справа от него
+    {
+        neighbourCount++;
+    }
+    if (Y - 1 >= 0 && s[Y - 1][X] == '#') // сверху от него
+    {
+        neighbourCount++;
+    }
+    if (Y + 1 < s.size() && s[Y + 1][X] == '#') // снизу от него
+    {
+        neighbourCount++;
+    }
+    if (Y - 1 >= 0 && s[Y - 1][X - 1] == '#') // слева верхняя диагональ от него
+    {
+        neighbourCount++;
+    }
+    if (Y - 1 >= 0 && X + 1 < s[0].size() && s[Y - 1][X + 1] == '#') // справа верхняя диагональ от него
+    {
+        neighbourCount++;
+    }
+    if (Y + 1 < s.size() && X - 1 < s[0].size() && s[Y + 1][X - 1] == '#') // слева нижняя диагональ от него
+    {
+        neighbourCount++;
+    }
+    if (Y + 1 < s.size() && X + 1 < s[0].size() && s[Y + 1][X + 1] == '#') // справа нижняя диагональ от него
+    {
+        neighbourCount++;
+    }
+
+    return neighbourCount;
+}
+
 int main(int argc, char * argv[])
 {
     auto args = ParseArgs(argc, argv);
-    std::string temp;
 
     if (!args)
     {
@@ -65,28 +112,52 @@ int main(int argc, char * argv[])
         std::cout << "Failed to open " << args->inputFile << " for reading\n";
         return 1;
     }
- 
-
-    int rows = 0;
+    
+    std::string temp;
+    Space firstGeneration;
+    Space secondGeneration;
     while (std::getline(input, temp))
     {
-        rows++;
-    }
-    std::vector<std::vector<char>> space(rows);
-    input.seekg(0);
-
-    int step = 0;
-    while (std::getline(input,temp))
-    {
         std::vector<char> row;
-        for (int i = 0; i < temp.length(); i++)
+        for (unsigned i = 0; i < temp.length(); i++)
         {
-            row[i] = temp[i];
+            row.push_back(temp[i]);
         }
-        space[step] = row;
-        step++;
+        firstGeneration.push_back(row);
+        secondGeneration.push_back(row);
     }
 
-    std::cout << "\n\n";
-    ShowSpace(space);
+    for (unsigned i = 1; i < firstGeneration.size() - 1; i++)
+    {
+        for (unsigned j = 1; j < firstGeneration[0].size() - 1; j++)
+        {
+            int neighbourCount = GetNeighbourCount(firstGeneration, i, j);
+
+            if (neighbourCount < 2 || neighbourCount > 3) // клетка умирает
+            {
+                secondGeneration[i][j] = ' ';
+            }
+            if (firstGeneration[i][j] == ' ' && neighbourCount == 3) // клетка оживает
+            {
+                secondGeneration[i][j] = '#';
+            }
+        }
+    }
+
+    if (args->outputFile)
+    {
+        std::ofstream output(args->outputFile.value());
+        if (!output.is_open())
+        {
+            std::cout << "Can't open " << args->outputFile.value() << " for writing\n";
+            return 1;
+        }
+        ShowSpace(secondGeneration, output);
+    }
+    else
+    {
+        ShowSpace(secondGeneration);
+    }
+
+    return 0;
 }

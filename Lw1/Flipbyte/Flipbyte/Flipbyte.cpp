@@ -3,16 +3,21 @@
 #include <string>
 #include <optional>
 
-
-bool HasLetter(const std::string &str)
+bool IsValidInput(const std::string& str)
 {
+	if (str == "0")
+	{
+		return true;
+	}
+
 	for (int i = 0; i < str.length(); i++) 
 	{
-		if (str[i] >= 'A' && str[i] <= 'Z' || str[i] >= 'a' && str[i] <= 'z')
+		if (str[i] >= '0' && str[i] <= '9')
 		{
 			return true;
 		}
 	}
+
 	return false;
 }
 
@@ -26,20 +31,21 @@ std::optional<int> ParseArgs(int argc, char* argv[])
 		return std::nullopt;
 	}
 
-	if (argv[1][0] == '0' || HasLetter(argv[1]))
+	if (!IsValidInput(argv[1]))
 	{
 		std::cout << "Invalid input. Must be decimal\n";
 		return std::nullopt;
 	}
 
-	if (std::stoi(argv[1]) > 255 || std::stoi(argv[1]) < 0)
+	int number = std::stoi(argv[1]);
+	if (number > 255 || number < 0)
 	{
-		std::cout << std::stoi(argv[1]) << " is out of range\n";
+		std::cout << number << " is out of range\n";
 		std::cout << "Usage: 0 <= <input byte> <= 255\n";
 		return std::nullopt;
 	}
 	
-	return std::stoi(argv[1]);
+	return number;
 }
 
 int ReverseBits(int x)
@@ -52,13 +58,13 @@ int ReverseBits(int x)
 
 int main(int argc, char* argv[])
 {
-	auto x = ParseArgs(argc, argv);
+	auto byte = ParseArgs(argc, argv);
 
-	if (!x)
+	if (!byte)
 	{
 		return 1;
 	}
 
-	int reversedX = ReverseBits(x.value());
-	std::cout << reversedX << "\n";
+	int reversedByte = ReverseBits(byte.value());
+	std::cout << reversedByte << "\n";
 }

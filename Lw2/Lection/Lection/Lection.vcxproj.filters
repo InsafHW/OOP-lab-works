@@ -15,16 +15,8 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Live.cpp">
+    <ClCompile Include="Lection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="input.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Test.bat">
-      <Filter>Source Files</Filter>
-    </None>
   </ItemGroup>
 </Project>

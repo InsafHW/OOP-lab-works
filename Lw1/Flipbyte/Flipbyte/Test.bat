@@ -33,6 +33,22 @@ REM Test with letter
 %MyProgram% f && goto err
 echo Test7 passed
 
+REM Test with out of range < 0
+%MyProgram% -2 && goto err
+echo Test8 passed
+
+REM Test with out of range > 255
+%MyProgram% 280 && goto err
+echo Test9 passed
+
+REM Test with border value = 0
+%MyProgram% 0 || goto err
+echo Test10 passed
+
+REM Test with border value = 255
+%MyProgram% 255 || goto err
+echo Test11 passed
+
 echo All test sucessfully passed
 exit /B 0
 

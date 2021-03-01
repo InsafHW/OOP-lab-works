@@ -34,7 +34,9 @@ std::optional<Args> ParseArgs(int argc, char* argv[])
     return args;
 }
 
-void ShowSpace(const Space& space, std::ofstream& outputFile)
+// проверить размер строки в инпуте
+
+void ShowSpace(const Space& space, std::ostream& outputFile) // объединить функции
 {
     for (int i = 0; i < space.size(); i++)
     {
@@ -46,55 +48,91 @@ void ShowSpace(const Space& space, std::ofstream& outputFile)
     }
 }
 
-void ShowSpace(const Space &space)
+bool ReadGeneration(std::istream& input, Space& firstGeneration, Space& secondGeneration)
 {
-    for (int i = 0; i < space.size(); i++)
+    std::string temp;
+    int step = 0;
+    while (std::getline(input, temp))
     {
-        for (int j = 0; j < space[i].size(); j++)
+        std::vector<char> row;
+        for (unsigned i = 0; i < temp.length(); i++)
         {
-            std::cout << space[i][j];
+            row.push_back(temp[i]);
         }
-        std::cout << std::endl;
+        if (step > 0 && firstGeneration[step - 1].size() != row.size())
+        {
+            std::cout << "The row's length is not similar to previous\n";
+            return false;
+        }
+        firstGeneration.push_back(row);
+        secondGeneration.push_back(row);
+        step++;
     }
+    return true;
 }
 
-int GetNeighbourCount(const Space &s, int Y, int X)
+int GetNeighbourCount(const Space &s, int Y, int X) // упростить
 {
     int neighbourCount = 0;
-    if (Y - 1 >= 0 && s[Y][X - 1] == '#') // слева от него
+    bool canGoTop = Y - 1 >= 0;
+    bool canGoLeft = X - 1 >= 0;
+    bool canGoRight = X + 1 < s[0].size();
+    bool canGoBottom = Y + 1 < s.size();
+
+    if (canGoLeft && s[Y][X - 1] == '#') // слева от него
     {
         neighbourCount++;
     }
-    if (X + 1 < s[0].size() && s[Y][X + 1] == '#') // справа от него
+    if (canGoRight && s[Y][X + 1] == '#') // справа от него
     {
         neighbourCount++;
     }
-    if (Y - 1 >= 0 && s[Y - 1][X] == '#') // сверху от него
+    if (canGoTop && s[Y - 1][X] == '#') // сверху от него
     {
         neighbourCount++;
     }
-    if (Y + 1 < s.size() && s[Y + 1][X] == '#') // снизу от него
+    if (canGoBottom && s[Y + 1][X] == '#') // снизу от него
     {
         neighbourCount++;
     }
-    if (Y - 1 >= 0 && s[Y - 1][X - 1] == '#') // слева верхняя диагональ от него
+    if (canGoTop && canGoLeft && s[Y - 1][X - 1] == '#') // слева верхняя диагональ от него
     {
         neighbourCount++;
     }
-    if (Y - 1 >= 0 && X + 1 < s[0].size() && s[Y - 1][X + 1] == '#') // справа верхняя диагональ от него
+    if (canGoTop && canGoRight && s[Y - 1][X + 1] == '#') // справа верхняя диагональ от него
     {
         neighbourCount++;
     }
-    if (Y + 1 < s.size() && X - 1 < s[0].size() && s[Y + 1][X - 1] == '#') // слева нижняя диагональ от него
+    if (canGoBottom && canGoLeft && s[Y + 1][X - 1] == '#') // слева нижняя диагональ от него
     {
         neighbourCount++;
     }
-    if (Y + 1 < s.size() && X + 1 < s[0].size() && s[Y + 1][X + 1] == '#') // справа нижняя диагональ от него
+    if (canGoBottom && canGoRight && s[Y + 1][X + 1] == '#') // справа нижняя диагональ от него
     {
         neighbourCount++;
     }
 
     return neighbourCount;
+}
+
+void ExploreNewGeneration(const Space& oldGeneration, Space& newGeneration)
+{
+    for (unsigned i = 1; i < oldGeneration.size() - 1; i++) // выделить циклы в функцию
+    {
+        for (unsigned j = 1; j < oldGeneration[0].size() - 1; j++)
+        {
+            int neighbourCount = GetNeighbourCount(oldGeneration, i, j);
+
+            if (neighbourCount < 2 || neighbourCount > 3) // клетка умирает
+            {
+                newGeneration[i][j] = ' ';
+            }
+            if (oldGeneration[i][j] == ' ' && neighbourCount == 3) // клетка оживает
+            {
+                newGeneration[i][j] = '#';
+            }
+        }
+    }
 }
 
 int main(int argc, char * argv[])
@@ -113,36 +151,13 @@ int main(int argc, char * argv[])
         return 1;
     }
     
-    std::string temp;
     Space firstGeneration;
     Space secondGeneration;
-    while (std::getline(input, temp))
+    if (!ReadGeneration(input, firstGeneration, secondGeneration))
     {
-        std::vector<char> row;
-        for (unsigned i = 0; i < temp.length(); i++)
-        {
-            row.push_back(temp[i]);
-        }
-        firstGeneration.push_back(row);
-        secondGeneration.push_back(row);
+        return 1;
     }
-
-    for (unsigned i = 1; i < firstGeneration.size() - 1; i++)
-    {
-        for (unsigned j = 1; j < firstGeneration[0].size() - 1; j++)
-        {
-            int neighbourCount = GetNeighbourCount(firstGeneration, i, j);
-
-            if (neighbourCount < 2 || neighbourCount > 3) // клетка умирает
-            {
-                secondGeneration[i][j] = ' ';
-            }
-            if (firstGeneration[i][j] == ' ' && neighbourCount == 3) // клетка оживает
-            {
-                secondGeneration[i][j] = '#';
-            }
-        }
-    }
+    ExploreNewGeneration(firstGeneration, secondGeneration);
 
     if (args->outputFile)
     {
@@ -156,7 +171,7 @@ int main(int argc, char * argv[])
     }
     else
     {
-        ShowSpace(secondGeneration);
+        ShowSpace(secondGeneration, std::cout);
     }
 
     return 0;

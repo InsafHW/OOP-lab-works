@@ -26,6 +26,14 @@ REM Test with output file
 %MyProgram% shouldRenderNewPersonInput.txt output.txt && fc shouldRenderNewPersonOutput.txt output.txt || goto err
 echo Test5 passed
 
+REM Test with file rows length which is less than previous one
+%MyProgram% moreRow.txt && goto err
+echo Test6 passed
+
+REM Test with file rows length which is more than previous one
+%MyProgram% lessRow.txt && goto err
+echo Test7 passed
+
 echo All test passed successfully
 exit /B 0
 

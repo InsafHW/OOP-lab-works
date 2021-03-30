@@ -1,70 +1,58 @@
 #include "Matrix.h"
-#include <fstream>
-#include <optional>
-#include <vector>
-#include <algorithm>
-#include <iostream>
-#include <iomanip>
 
-std::vector<double> ReadNumbers(const std::string& str)
+std::optional<std::vector<double>> ReadNumbers(const std::string& fileName)
 {
-	std::string digit;
+	// переделал на copy
 	std::vector<double> numbers;
+	std::ifstream file(fileName);
 
-	if (str.empty())
+	if (file.is_open())
 	{
+		copy(std::istream_iterator<double>(file), std::istream_iterator<double>(), back_inserter(numbers));
 		return numbers;
 	}
-
-	int error = std::find_if_not(str.begin(), str.end(), [](char c) { return c == ' ' || (c >= '0' && c <= '9'); }) != str.end();
-	if (error)
+	else
 	{
-		std::cout << "Invalid input, expected only numbers\n";
-		return numbers;
+		std::cout << "Не удалось открыть " << fileName << " для чтения" << std::endl;;
+		return std::nullopt;
 	}
-
-	for (unsigned i = 0; i < str.length(); i++)
-	{
-		if (str[i])
-			if (str[i] == ' ')
-			{
-				if (stod(digit))
-				{
-					numbers.push_back(stod(digit) * 1.000);
-				}
-				digit = "";
-				continue;
-			}
-		digit += str[i];
-	}
-	if (stod(digit))
-	{
-		numbers.push_back(stod(digit) * 1.000);
-	}
-	return numbers;
 }
-
 
 void CalculateNumbers(std::vector<double>& numbers)
 {
+	// переделал на transform
+	if (numbers.empty()) return;
 	auto minElRef = std::min_element(numbers.begin(), numbers.end());
 	double min = *minElRef;
-	for (unsigned i = 0; i < numbers.size(); i++)
-	{
-		numbers[i] *= min;
-	}
+	std::transform(numbers.begin(), numbers.end(), numbers.begin(), [&](double n) {return n * min; });
 }
 
-void ShowNumbers(std::vector<double>& numbers)
+std::string ShowNumbers(std::vector<double>& numbers)
 {
 	sort(numbers.begin(), numbers.end());
-	std::string result;
+	std::ostringstream streamObj;
+	streamObj << std::fixed << std::setprecision(3);
 	for (unsigned i = 0; i < numbers.size(); i++)
 	{
 		if (i != 0)
 		{
-			std::cout << " ";
+			streamObj << " ";
 		}
-		std::cout << std::fixed << std::setprecision(3) << numbers[i];
+		streamObj << numbers[i];
 	}
+
+	return streamObj.str();
+}
+
+std::string MakeCalculation(const std::string& fileName)
+{
+	auto numbers = ReadNumbers(fileName);
+
+	if (!numbers || numbers && numbers.value().empty())
+	{
+		return "";
+	}
+	CalculateNumbers(numbers.value());
+	std::string result = ShowNumbers(numbers.value());
+	return result;
 }

@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{b454cb96-5088-4109-8c4f-bd51aea61733}</ProjectGuid>
-    <RootNamespace>Task2HTMLEncode</RootNamespace>
+    <ProjectGuid>{b0e7c39e-7421-4890-a61d-fdd5f705b054}</ProjectGuid>
+    <RootNamespace>Task5ParseURL</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -139,11 +139,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Encode.cpp" />
-    <ClCompile Include="Task2. HTML Encode.cpp" />
+    <ClCompile Include="Task5. ParseURL.cpp" />
+    <ClCompile Include="UrlParser.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Encode.h" />
+    <ClInclude Include="UrlParser.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

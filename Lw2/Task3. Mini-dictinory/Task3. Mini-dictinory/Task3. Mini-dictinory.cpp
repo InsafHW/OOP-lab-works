@@ -1,14 +1,9 @@
-﻿#include <iostream>
-#include <string>
-#include <map>
-#include <Windows.h>
+﻿#include <Windows.h>
 #include <optional>
 #include <fstream>
 #include "Dictinory.h"
 
 using namespace std;
-
-typedef map<string, vector<string>> Dictinory;
 
 void SetRuEnc()
 {
@@ -22,27 +17,63 @@ optional<string> ParseArgs(int argc, char* argv[])
 	{
 		return argv[1];
 	}
-	std::cout << "Invalid param count. Usage Mini-dictonory.exe <dictinoryFile>\n";
+	std::cout << "Invalid params count. Usage Mini-dictonory.exe <dictinoryFile>\n";
 	return nullopt;
 };
+
+void SaveNewTranslationsInFileUI(string outputFileName, string newTranslations)
+{
+	cout << "В словарь были внесены изменения. Введите Y или y для сохранения перед выходом.\n";
+	char ch;
+	ch = cin.get();
+	if (ch == 'Y' || ch == 'y')
+	{
+		SaveDictionoryIntoFile(outputFileName, newTranslations);
+		cout << "Изменения сохранены в файле \"" << outputFileName << "\". До свидания.";
+	}
+	else
+	{
+		cout << "Изменения не сохранены.";
+	}
+}
+
+void WriteTranslationUI(string unknowWord, bool& hasBeenTranslated, string& translation)
+{
+	cout << "Неизвестное слово \"" << unknowWord << "\". Введите перевод или пустую строку для отказа.\n";
+	while (true)
+	{
+		char ch = cin.get();
+		if (translation.length() > 1 && ch == '\n')
+		{
+			hasBeenTranslated = true;
+			break;
+		}
+		translation += ch;
+		if (translation == "\n")
+		{
+			cout << "Слово \"" << unknowWord << "\" проигнорировано.\n";
+			break;
+		}
+	}
+}
+
 
 int main(int argc, char* argv[])
 {
 	SetRuEnc();
 	auto args = ParseArgs(argc, argv);
-	string toSaveDict;
+	string newTranslations;
 
-	Dictinory dictinory;
+	Dictionary dictionary;
 	if (args)
 	{
-		dictinory = ReadDictinory(args.value());
+		dictionary = ReadDictinory(args.value());
 	}
 
 	string line;
 	bool addedWordInDictinory = false;
 	while (getline(cin, line))
 	{
-		//Translate(line, addedWordInDictinory, toSaveDict, args ? args.value() : "dictonory.txt", dictinory);
 		if (line.empty())
 		{
 			cout << endl;
@@ -52,71 +83,29 @@ int main(int argc, char* argv[])
 		{
 			if (addedWordInDictinory)
 			{
-				cout << "В словарь были внесены изменения. Введите Y или y для сохранения перед выходом.\n";
-				char ch;
-				ch = cin.get();
-				if (ch == 'Y' || ch == 'y')
-				{
-					if (args)
-					{
-						SaveDictionory(args.value(), toSaveDict);
-					}
-					else
-					{
-						SaveDictionory("dictinory.txt", toSaveDict);
-					}
-					cout << "Изменения сохранены. До свидания.";
-				}
-				else
-				{
-					cout << "Изменения не сохранены.";
-				}
+				string outputFileName = args ? args.value() : "dictionary.txt";
+				SaveNewTranslationsInFileUI(outputFileName, newTranslations);
 			}
 			break;
 		}
-		string lineCopy = line;
-		ToLowerString(line);
-		if (dictinory.find(line) != dictinory.end())
+		string loweredLine = ToLowerString(line);
+		string translation = Translate(dictionary, loweredLine);
+		if (!translation.empty())
 		{
-			auto translation = dictinory[line];
-			for (unsigned i = 0; i < translation.size(); i++)
-			{
-				if (i != 0)
-				{
-					cout << ", ";
-				}
-				cout << translation[i];
-			}
-			cout << endl;
+			cout << translation << endl;
 		}
 		else
 		{
 			string translation;
 			bool hasTranslation = false;
-			cout << "Неизвестное слово \"" << lineCopy << "\". Введите перевод или пустую строку для отказа.\n";
-			while (true)
-			{
-				char ch = cin.get();
-				if (translation.length() > 1 && ch == '\n')
-				{
-					hasTranslation = true;
-					break;
-				}
-				translation += ch;
-				if (translation == "\n")
-				{
-					cout << "Слово \"" << line << "\" проигнорировано.\n";
-					break;
-				}
-			}
+			WriteTranslationUI(line, hasTranslation, translation);
 			if (hasTranslation)
 			{
-				string translationCopy = translation;
-				ToLowerString(translation);
-				toSaveDict += line + " " + translation + "\n";
+				string loweredTranslation = ToLowerString(translation);
+				newTranslations += loweredLine + " " + loweredTranslation + "\n";
 				addedWordInDictinory = true;
-				dictinory[line].push_back(translation);
-				cout << "Слово \"" << line << "\" сохранено в словаре как \"" << translationCopy << "\"\n";
+				AddWordInDictonary(dictionary, loweredLine, loweredTranslation);
+				cout << "Слово \"" << line << "\" сохранено в словаре как \"" << translation << "\"\n";
 			}
 		}
 	}

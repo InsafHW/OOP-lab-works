@@ -1,0 +1,5 @@
+cat кошка, кот
+dog собака
+fox лиса, лисочка
+thunder гром
+ligtning молния

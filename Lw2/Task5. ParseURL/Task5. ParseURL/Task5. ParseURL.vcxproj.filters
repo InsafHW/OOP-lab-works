@@ -15,15 +15,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Task2. HTML Encode.cpp">
+    <ClCompile Include="Task5. ParseURL.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Encode.cpp">
+    <ClCompile Include="UrlParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Encode.h">
+    <ClInclude Include="UrlParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

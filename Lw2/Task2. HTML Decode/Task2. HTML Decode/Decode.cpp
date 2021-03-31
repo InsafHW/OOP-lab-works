@@ -10,7 +10,6 @@ std::map<std::string, char> translation = {
 };
 
 
-// убрать лишнюю проверку? while Заменить на for
 std::string Decode(std::string const& text)
 {
 	std::string decodedText;

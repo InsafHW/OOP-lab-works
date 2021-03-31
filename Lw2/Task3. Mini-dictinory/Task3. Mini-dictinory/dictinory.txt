@@ -1,12 +1,10 @@
-cat кошка
-dog собака
-men мужчины
-car машина
-thunder молни€
-thunde почти молни€
-key ключ
-sun солнце
-sky небок
-ball м€ч
-mushroom грибы
 i dont know € не знаю
+cat кошка, кошак
+home дом
+thunder гром
+airplane самолет
+key ключ
+frog л€гушка
+hey привет
+car машина, тачка
+music музыка

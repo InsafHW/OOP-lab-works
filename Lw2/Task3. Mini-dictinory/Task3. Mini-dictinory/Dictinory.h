@@ -6,10 +6,13 @@
 #include <iostream>
 #include <algorithm>
 
-typedef std::map<std::string, std::vector<std::string>> Dictinory;
+using namespace std;
+
+typedef map<string, vector<string>> Dictionary;
 
 char ToLowerChar(char ch);
-void ToLowerString(std::string& str);
-Dictinory ReadDictinory(const std::string& fileName);
-void SaveDictionory(const std::string& fileName, std::string& transl);
-void Translate(std::string line, bool& addedWordInDictinory, std::string& newWordsToSave, std::string outputFileName, Dictinory dictinory);
+string ToLowerString(string str);
+Dictionary ReadDictinory(string fileName);
+string Translate(Dictionary& dictionary, string line);
+void AddWordInDictonary(Dictionary& dictionary, string newWordToAdd, string newWordTransaltion);
+void SaveDictionoryIntoFile(string outputFileName, string newWordsToSave);

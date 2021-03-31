@@ -145,6 +145,9 @@
   <ItemGroup>
     <ClInclude Include="..\Task3. Mini-dictinory\Dictinory.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="test_read_dictonory.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -7,37 +7,39 @@ char ToLowerChar(char ch)
 	return ch;
 }
 
-void ToLowerString(std::string& str)
+string ToLowerString(string str)
 {
-	std::transform(str.begin(), str.end(), str.begin(), ToLowerChar);
+	transform(str.begin(), str.end(), str.begin(), ToLowerChar);
+	return str;
 }
 
-Dictinory ReadDictinory(const std::string& fileName)
+Dictionary ReadDictinory(string fileName)
 {
-	Dictinory dictinory;
-	std::ifstream file(fileName);
+	Dictionary dictionary;
+	ifstream file(fileName);
 	if (!file.is_open())
 	{
-		std::cout << "Failed to open '" << &file << "' for reading\n";
-		return dictinory;
+		cout << "Failed to open '" << &file << "' for reading\n";
+		return dictionary;
 	}
-	std::string line;
+	string line;
 	while (getline(file, line))
 	{
-		int spaceIdx = line.find(" ");
-		std::string engWord = line.substr(0, spaceIdx);
-		ToLowerString(engWord);
-		line = line.substr(spaceIdx + 1);
-
-		std::string rusWord;
+		int rusLetterIdx = line.find_first_of("абвгдеЄжзийклмнопрстуфхцчшщъыьэю€јЅ¬√ƒ≈®∆«»… ЋћЌќѕ–—“”‘’÷„ЎўЏџ№Ёёя");
+		string engWord = line.substr(0, rusLetterIdx - 1);
+		engWord = ToLowerString(engWord);
+		line = line.substr(rusLetterIdx);
+		string rusWord;
 		for (unsigned i = 0; i < line.length(); i++)
 		{
-			if (line[i] == ',' || line[i] == ' ')
+			if (line[i] == ',')
 			{
 				if (!rusWord.empty())
 				{
-					ToLowerString(rusWord);
-					dictinory[engWord].push_back(rusWord);
+					rusWord = ToLowerString(rusWord);
+					dictionary[engWord].push_back(rusWord);
+					// чтобы убрать пробел x,_y
+					i++;
 				}
 				rusWord = "";
 				continue;
@@ -46,90 +48,45 @@ Dictinory ReadDictinory(const std::string& fileName)
 		}
 		if (!rusWord.empty())
 		{
-			ToLowerString(rusWord);
-			dictinory[engWord].push_back(rusWord);
+			rusWord = ToLowerString(rusWord);
+			dictionary[engWord].push_back(rusWord);
 		}
 	}
-	return dictinory;
+	return dictionary;
 }
 
-void SaveDictionory(const std::string& fileName, std::string& transl)
+string Translate(Dictionary& dictionary, string line)
 {
-	std::ofstream out(fileName, std::ios::app);
-	transl.erase(transl.length() - 1);
-	out << "\n";
-	out << transl;
-}
-
-void Translate(std::string line, bool& addedWordInDictinory, std::string& newWordsToSave, std::string outputFileName, Dictinory dictinory)
-{
-	if (line.empty())
+	string translationStr;
+	if (dictionary.find(line) != dictionary.end())
 	{
-		std::cout << std::endl;
-		return;
-	}
-	if (line == "...")
-	{
-		if (addedWordInDictinory)
-		{
-			std::cout << "¬ словарь были внесены изменени€. ¬ведите Y или y дл€ сохранени€ перед выходом.\n";
-			char ch;
-			ch = std::cin.get();
-			if (ch == 'Y' || ch == 'y')
-			{
-				SaveDictionory(outputFileName, newWordsToSave);
-				std::cout << "»зменени€ сохранены. ƒо свидани€.";
-			}
-			else
-			{
-				std::cout << "»зменени€ не сохранены.";
-			}
-		}
-		return;
-	}
-	std::string lineCopy = line;
-	ToLowerString(line);
-	if (dictinory.find(line) != dictinory.end())
-	{
-		auto translation = dictinory[line];
+		auto translation = dictionary[line];
 		for (unsigned i = 0; i < translation.size(); i++)
 		{
 			if (i != 0)
 			{
-				std::cout << ", ";
+				translationStr += ", ";
 			}
-			std::cout << translation[i];
+			translationStr += translation[i];
 		}
-		std::cout << std::endl;
+		translationStr += "\n";
 	}
-	else
+	if (!translationStr.empty())
 	{
-		std::string translation;
-		bool hasTranslation = false;
-		std::cout << "Ќеизвестное слово \"" << lineCopy << "\". ¬ведите перевод или пустую строку дл€ отказа.\n";
-		while (true)
-		{
-			char ch = std::cin.get();
-			if (translation.length() > 1 && ch == '\n')
-			{
-				hasTranslation = true;
-				break;
-			}
-			translation += ch;
-			if (translation == "\n")
-			{
-				std::cout << "—лово \"" << line << "\" проигнорировано.\n";
-				break;
-			}
-		}
-		if (hasTranslation)
-		{
-			std::string translationCopy = translation;
-			ToLowerString(translation);
-			newWordsToSave += line + " " + translation + "\n";
-			addedWordInDictinory = true;
-			dictinory[line].push_back(translation);
-			std::cout << "—лово \"" << lineCopy << "\" сохранено в словаре как \"" << translationCopy << "\"\n";
-		}
+		translationStr.erase(translationStr.length() - 1, 1);
 	}
+	return translationStr;
+}
+
+void AddWordInDictonary(Dictionary& dictionary, string newWordToAdd, string newWordTransaltion)
+{
+	dictionary[newWordToAdd].push_back(newWordTransaltion);
+}
+
+void SaveDictionoryIntoFile(string outputFileName, string newWordsToSave)
+{
+	ofstream out(outputFileName, ios::app);
+	newWordsToSave.erase(newWordsToSave.length() - 1);
+	out << "\n";
+	out << newWordsToSave;
 }

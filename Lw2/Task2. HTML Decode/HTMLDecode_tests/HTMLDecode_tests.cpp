@@ -62,7 +62,7 @@ SCENARIO("Decode Lines")
 	WHEN("Input stream has &quot; or &apos; or &lt; or &gt; or &amp; it decodes it")
 	{
 		std::istringstream input("&quot;&apos;&lt;&gt;&amp;");
-		THEN("output stream is also empty")
+		THEN("output stream is decoded")
 		{
 			DecodeLines(input, output);
 			CHECK(output.str() == "\"'<>&");
@@ -73,7 +73,7 @@ SCENARIO("Decode Lines")
 	WHEN("Input stream has encoded word with simple words it gives decoded reserved and the rest of the string")
 	{
 		std::istringstream input("I&apos;m a person");
-		THEN("output stream is also empty")
+		THEN("encoded words are decoded")
 		{
 			DecodeLines(input, output);
 			CHECK(output.str() == "I'm a person");
@@ -92,5 +92,3 @@ SCENARIO("Decode Lines")
 		}
 	}
 }
-
-// &;&;&;&;&;&;&;&;&; &&&&&&&&&&&;

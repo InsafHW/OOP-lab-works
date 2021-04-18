@@ -9,7 +9,10 @@
 #include <iterator>
 #include <sstream>
 
-std::optional<std::vector<double>> ReadNumbers(const std::string& fileName);
-std::string ShowNumbers(std::vector<double>& numbers);
-void CalculateNumbers(std::vector<double>& numbers);
-std::string MakeCalculation(const std::string& str);
+
+using namespace std;
+
+optional<vector<double>> ReadNumbers(const string& fileName);
+string ShowNumbers(vector<double>& numbers);
+void CalculateNumbers(vector<double>& numbers);
+string MakeCalculation(const string& str);

@@ -1,5 +1,4 @@
 ﻿#include <iostream>
-#include <string>
 #define CATCH_CONFIG_MAIN
 #include "../../../../catch2/catch.hpp"
 
@@ -56,6 +55,16 @@ SCENARIO("Если есть :, но порт не указан - невалид�
 	REQUIRE(ParseURL("http://www.mysite.com:/docs/document1.html?page=30&lang=en#title", pr, port, host, document) == false);
 }
 
+SCENARIO("Если порт указан в виде символов, а не цифр - невалидный url")
+{
+	setlocale(LC_ALL, "ru");
+	cout << "Если порт указан в виде символов, а не цифр - невалидный url" << endl;
+	Protocol pr;
+	int port;
+	string host, document;
+	REQUIRE(ParseURL("http://www.mysite.com:gerg/docs/document1.html?page=30&lang=en#title", pr, port, host, document) == false);
+}
+
 SCENARIO("Если порт меньше 1 - невалидный url")
 {
 	setlocale(LC_ALL, "ru");
@@ -83,7 +92,7 @@ SCENARIO("Если хост - пустой, то - невалидный url")
 	Protocol pr;
 	int port;
 	string host, document;
-	REQUIRE(ParseURL("http://:23/docs/document1.html?page=30&lang=en#title", pr, port, host, document) == false);
+	REQUIRE(ParseURL("http://:www.mysite.com/docs/document1.html?page=30&lang=en#title", pr, port, host, document) == false);
 }
 
 SCENARIO("Если протокол отличен от http | https | ftp - невалидный url")
@@ -93,7 +102,7 @@ SCENARIO("Если протокол отличен от http | https | ftp - н�
 	Protocol pr;
 	int port;
 	string host, document;
-	REQUIRE(ParseURL("hrte://www.mysite.com:655356/docs/document1.html?page=30&lang=en#title", pr, port, host, document) == false);
+	REQUIRE(ParseURL("hrte://www.mysite.com:234/docs/document1.html?page=30&lang=en#title", pr, port, host, document) == false);
 }
 
 SCENARIO("Если порт не указан и протокол = http, то порт - 80")
@@ -125,7 +134,7 @@ SCENARIO("Если порт не указан и протокол = https, то 
 SCENARIO("Если порт не указан и протокол = ftp, то порт - 21")
 {
 	setlocale(LC_ALL, "ru");
-	cout << "Если порт не указан и протокол = 21, то порт - 21" << endl;
+	cout << "Если порт не указан и протокол = ftp, то порт - 21" << endl;
 	Protocol pr;
 	int port;
 	string host, document;

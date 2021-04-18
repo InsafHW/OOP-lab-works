@@ -1,37 +1,40 @@
 #include "Matrix.h"
+#include <string>
 
-std::optional<std::vector<double>> ReadNumbers(const std::string& fileName)
+const string CANNOT_OPEN = "Ќе удалось открыть";
+const string FOR_READING = "дл€ чтени€";
+
+optional<vector<double>> ReadNumbers(const string& fileName)
 {
 	// переделал на copy
-	std::vector<double> numbers;
-	std::ifstream file(fileName);
+	vector<double> numbers;
+	ifstream file(fileName);
 
-	if (file.is_open())
+	if (!file.is_open())
 	{
-		copy(std::istream_iterator<double>(file), std::istream_iterator<double>(), back_inserter(numbers));
-		return numbers;
+		cout << CANNOT_OPEN << " " << fileName << " " << FOR_READING << endl;;
+		return nullopt;
 	}
-	else
-	{
-		std::cout << "Ќе удалось открыть " << fileName << " дл€ чтени€" << std::endl;;
-		return std::nullopt;
-	}
+
+	copy(istream_iterator<double>(file), istream_iterator<double>(), back_inserter(numbers));
+	return numbers;
+
 }
 
-void CalculateNumbers(std::vector<double>& numbers)
+void CalculateNumbers(vector<double>& numbers)
 {
 	// переделал на transform
 	if (numbers.empty()) return;
-	auto minElRef = std::min_element(numbers.begin(), numbers.end());
+	auto minElRef = min_element(numbers.begin(), numbers.end());
 	double min = *minElRef;
-	std::transform(numbers.begin(), numbers.end(), numbers.begin(), [&](double n) {return n * min; });
+	transform(numbers.begin(), numbers.end(), numbers.begin(), [&](double n) {return n * min; });
 }
 
-std::string ShowNumbers(std::vector<double>& numbers)
+string ShowNumbers(vector<double>& numbers)
 {
 	sort(numbers.begin(), numbers.end());
-	std::ostringstream streamObj;
-	streamObj << std::fixed << std::setprecision(3);
+	ostringstream streamObj;
+	streamObj << fixed << setprecision(3);
 	for (unsigned i = 0; i < numbers.size(); i++)
 	{
 		if (i != 0)
@@ -44,7 +47,7 @@ std::string ShowNumbers(std::vector<double>& numbers)
 	return streamObj.str();
 }
 
-std::string MakeCalculation(const std::string& fileName)
+string MakeCalculation(const string& fileName)
 {
 	auto numbers = ReadNumbers(fileName);
 
@@ -53,6 +56,6 @@ std::string MakeCalculation(const std::string& fileName)
 		return "";
 	}
 	CalculateNumbers(numbers.value());
-	std::string result = ShowNumbers(numbers.value());
+	string result = ShowNumbers(numbers.value());
 	return result;
 }

@@ -291,5 +291,69 @@ SCENARIO("Оператор <<")
 
 SCENARIO("Оператор >>")
 {
-	cout << "" << endl;
+	cout << "Если инпут пустой, то создаст нулевое комплексное число" << endl;
+	stringstream input;
+	input << "";
+	CComplex c1;
+	input >> c1;
+	REQUIRE(c1.Re() == 0);
+	REQUIRE(c1.Im() == 0);
+	cout << "Если инпут содержит только отриц. действ. число, то создаст комплекс. число с этим действ. значением" << endl;
+	input.clear();
+	input << "-3";
+	CComplex c2;
+	input >> c2;
+	REQUIRE(c2.Re() == -3);
+	REQUIRE(c2.Im() == 0);
+	cout << "Если инпут содержит только отриц. мнимое. число, то создаст комплекс. число с этим мнимым. значением" << endl;
+	input.clear();
+	input << "-3i";
+	CComplex c3;
+	input >> c3;
+	REQUIRE(c3.Re() == 0);
+	REQUIRE(c3.Im() == -3);
+	cout << "Если инпут содержит отриц. действ. число и отр. мнимое, то создаст комплекс. число с этими значением" << endl;
+	input.clear();
+	input << "-3-5i";
+	CComplex c4;
+	input >> c4;
+	REQUIRE(c4.Re() == -3);
+	REQUIRE(c4.Im() == -5);
+	cout << "Если инпут содержит отриц. действ. число и полож. мнимое, то создаст комплекс. число с этими значением" << endl;
+	input.clear();
+	input << "-3+5i";
+	CComplex c5;
+	input >> c5;
+	REQUIRE(c5.Re() == -3);
+	REQUIRE(c5.Im() == 5);
+
+
+	cout << "Если инпут содержит только полож. действ. число, то создаст комплекс. число с этим действ. значением" << endl;
+	input.clear();
+	input << "3";
+	CComplex c6;
+	input >> c6;
+	REQUIRE(c6.Re() == 3);
+	REQUIRE(c6.Im() == 0);
+	cout << "Если инпут содержит только полож. мнимое. число, то создаст комплекс. число с этим мнимым. значением" << endl;
+	input.clear();
+	input << "3i";
+	CComplex c7;
+	input >> c7;
+	REQUIRE(c7.Re() == 0);
+	REQUIRE(c7.Im() == 3);
+	cout << "Если инпут содержит полож. мнимое. число и полож. действ. число, то создаст комплекс. число с этими значением" << endl;
+	input.clear();
+	input << "1+3i";
+	CComplex c8;
+	input >> c8;
+	REQUIRE(c8.Re() == 1);
+	REQUIRE(c8.Im() == 3);
+	cout << "Если инпут содержит отр. мнимое. число и полож. действ. число, то создаст комплекс. число с этими значением" << endl;
+	input.clear();
+	input << "1-3i";
+	CComplex c9;
+	input >> c9;
+	REQUIRE(c9.Re() == 1);
+	REQUIRE(c9.Im() == -3);
 }

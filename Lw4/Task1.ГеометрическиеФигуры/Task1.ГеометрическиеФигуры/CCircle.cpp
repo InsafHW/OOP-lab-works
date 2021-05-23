@@ -5,6 +5,18 @@ CCircle::CCircle(CPoint center, double radius)
 	, m_radius(radius)
 { }
 
+CCircle::CCircle(CPoint center, double radius, uint32_t outlineColor) : m_center(center)
+, m_radius(radius)
+, m_outlineColor(outlineColor)
+{ }
+
+CCircle::CCircle(CPoint center, double radius, uint32_t outlineColor, uint32_t fillColor)
+	: m_center(center)
+	, m_radius(radius)
+	, m_outlineColor(outlineColor)
+	, m_fillColor(fillColor)
+{ }
+
 double CCircle::GetArea() const
 {
 	return PI * m_radius * m_radius;

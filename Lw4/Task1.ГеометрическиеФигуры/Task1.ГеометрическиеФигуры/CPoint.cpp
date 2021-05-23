@@ -16,7 +16,6 @@ void CPoint::SetY(double y)
 	this->y = y;
 }
 
-
 double CPoint::GetX() const
 {
 	return x;

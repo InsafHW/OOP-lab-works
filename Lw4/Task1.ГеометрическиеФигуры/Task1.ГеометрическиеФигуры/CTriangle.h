@@ -8,6 +8,8 @@ class CTriangle : public ISolidShape
 {
 public:
 	CTriangle(CPoint vertex1, CPoint vertex2, CPoint vertex3);
+	CTriangle(CPoint vertex1, CPoint vertex2, CPoint vertex3, uint32_t outlineColor);
+	CTriangle(CPoint vertex1, CPoint vertex2, CPoint vertex3, uint32_t outlineColor, uint32_t fillColor);
 	double GetArea() const override;
 	double GetPerimeter() const override;
 	uint32_t GetFillColor() const override;
@@ -28,7 +30,7 @@ private:
 	CPoint m_vertex1;
 	CPoint m_vertex2;
 	CPoint m_vertex3;
-	uint32_t m_outlineColor = 0xFF000000;
-	uint32_t m_fillColor = 0xFF000000;
+	uint32_t m_outlineColor = 0xFF0000;
+	uint32_t m_fillColor = 0xFF0000;
 };
 

@@ -36,6 +36,9 @@
     <ClCompile Include="..\Task1.ГеометрическиеФигуры\CCircle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\Task1.ГеометрическиеФигуры\CShapeController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Task1.ГеометрическиеФигуры\CLineSegment.h">
@@ -54,6 +57,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Task1.ГеометрическиеФигуры\CCircle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Task1.ГеометрическиеФигуры\CShapeController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -51,7 +51,7 @@ CComplex const CComplex::operator/(CComplex const& complex2) const
 	double powSum = pow(complex2.m_real, 2) + pow(complex2.m_image, 2);
 	if (powSum == 0)
 	{
-		cout << "Ошибка - на 0 делить нельзя" << endl;
+		cout << ERROR_DIVIDE_ZERO << endl;
 		return *this;
 	}
 	double real = (m_real * complex2.m_real + m_image * complex2.m_image) / powSum;
@@ -63,7 +63,7 @@ CComplex const CComplex::operator/(double scalar) const
 {
 	if (scalar == 0)
 	{
-		cout << "Ошибка - на 0 делить нельзя" << endl;
+		cout << ERROR_DIVIDE_ZERO << endl;
 		return *this;
 	}
 	return CComplex(m_real / scalar, m_image / scalar);
@@ -120,7 +120,7 @@ CComplex& CComplex::operator/=(CComplex const& complex)
 	double powSum = pow(complex.m_real, 2) + pow(complex.m_image, 2);
 	if (powSum == 0)
 	{
-		cout << "Ошибка - на 0 делить нельзя" << endl;
+		cout << ERROR_DIVIDE_ZERO << endl;
 		return *this;
 	}
 
@@ -138,7 +138,7 @@ CComplex& CComplex::operator/=(double scalar)
 {
 	if (scalar == 0)
 	{
-		cout << "Ошибка - на 0 делить нельзя" << endl;
+		cout << ERROR_DIVIDE_ZERO << endl;
 		return *this;
 	}
 	m_real /= scalar;
@@ -208,31 +208,72 @@ ostream& operator<<(ostream& stream, CComplex const& complex)
 
 istream& operator>>(istream& stream, CComplex& complex)
 {
-	double real, image;
+	double real = 0, image = 0;
 	string line;
 	getline(stream, line);
-	char sign = line[0];
-	line = line.substr(1);
+
+	if (line.empty())
+	{
+		complex = CComplex(real, image);
+		return stream;
+	}
+
+	bool isFirstMinus = line[0] == '-';
+
+	if (isFirstMinus)
+	{
+		line = line.substr(1);
+	}
 
 	int minus = line.find("-");
 	int plus = line.find("+");
+	int i = line.find("i");
+
+	if (minus == -1 && plus == -1 && i == -1)
+	{
+		// только действительное отрицательное число
+		real = stod(line);
+		if (isFirstMinus)
+		{
+			real *= -1;
+		}
+	}
 
 	if (minus != -1)
 	{
+		// идет отрицательное мнимое число
 		real = stod(line.substr(0, minus));
+		if (isFirstMinus)
+		{
+			real *= -1;
+		}
 		line = line.substr(minus + 1);
 		int i = line.find("i");
-		image = -stod(line.substr(0, i - 1));
-	}
-	else
-	{
-		real = stod(line.substr(0, plus));
-		line = line.substr(plus + 1);
-		int i = line.find("i");
-		image = stod(line.substr(0, i - 1));
+		image = stod(line.substr(0, i)) * -1;
 	}
 
-	real = sign == '-' ? -real : real;
+	if (plus != -1)
+	{
+		// идет положительное мнимое число
+		real = stod(line.substr(0, plus));
+		if (isFirstMinus)
+		{
+			real *= -1;
+		}
+		line = line.substr(plus + 1);
+		int i = line.find("i");
+		image = stod(line.substr(0, i));
+	}
+
+	if (minus == -1 && plus == -1 && i != -1)
+	{
+		image = stod(line);
+		if (isFirstMinus)
+		{
+			image *= -1;
+		}
+	}
+
 	complex = CComplex(real, image);
 
 	return stream;

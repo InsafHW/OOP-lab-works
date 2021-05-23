@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{14d4208c-e308-4ba2-b2c0-840a809c5100}</ProjectGuid>
-    <RootNamespace>Task1tests</RootNamespace>
+    <ProjectGuid>{6520c020-0079-459c-9e49-cea6c5448e3e}</ProjectGuid>
+    <RootNamespace>task7tests</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -139,25 +139,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Task1.ГеометрическиеФигуры\CCircle.cpp" />
-    <ClCompile Include="..\Task1.ГеометрическиеФигуры\CLineSegment.cpp" />
-    <ClCompile Include="..\Task1.ГеометрическиеФигуры\CPoint.cpp" />
-    <ClCompile Include="..\Task1.ГеометрическиеФигуры\CRectangle.cpp" />
-    <ClCompile Include="..\Task1.ГеометрическиеФигуры\CShapeController.cpp" />
-    <ClCompile Include="..\Task1.ГеометрическиеФигуры\CTriangle.cpp" />
-    <ClCompile Include="..\Task1.ГеометрическиеФигуры\IShape.cpp" />
-    <ClCompile Include="Task1_tests.cpp" />
+    <ClCompile Include="..\Task7.HTTP_URL\CHttpUrl.cpp" />
+    <ClCompile Include="..\Task7.HTTP_URL\CUrlParsingException.cpp" />
+    <ClCompile Include="task7_tests.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Task1.ГеометрическиеФигуры\CCircle.h" />
-    <ClInclude Include="..\Task1.ГеометрическиеФигуры\CLineSegment.h" />
-    <ClInclude Include="..\Task1.ГеометрическиеФигуры\CPoint.h" />
-    <ClInclude Include="..\Task1.ГеометрическиеФигуры\CRectangle.h" />
-    <ClInclude Include="..\Task1.ГеометрическиеФигуры\CShapeController.h" />
-    <ClInclude Include="..\Task1.ГеометрическиеФигуры\CTriangle.h" />
-    <ClInclude Include="..\Task1.ГеометрическиеФигуры\IShape.h" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Task7.HTTP_URL\CHttpUrl.h" />
+    <ClInclude Include="..\Task7.HTTP_URL\CUrlParsingException.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\packages\boost.1.76.0.0\build\boost.targets" Condition="Exists('..\packages\boost.1.76.0.0\build\boost.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\boost.1.76.0.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\boost.1.76.0.0\build\boost.targets'))" />
+  </Target>
 </Project>

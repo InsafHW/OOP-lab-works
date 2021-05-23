@@ -1,9 +1,25 @@
 #include "CTriangle.h"
+#include "CLineSegment.h"
 
 CTriangle::CTriangle(CPoint vertex1, CPoint vertex2, CPoint vertex3)
 	:m_vertex1(vertex1)
 	, m_vertex2(vertex2)
 	, m_vertex3(vertex3)
+{ }
+
+CTriangle::CTriangle(CPoint vertex1, CPoint vertex2, CPoint vertex3, uint32_t outlineColor)
+	: m_vertex1(vertex1)
+	, m_vertex2(vertex2)
+	, m_vertex3(vertex3)
+	, m_outlineColor(outlineColor)
+{ }
+
+CTriangle::CTriangle(CPoint vertex1, CPoint vertex2, CPoint vertex3, uint32_t outlineColor, uint32_t fillColor)
+	: m_vertex1(vertex1)
+	, m_vertex2(vertex2)
+	, m_vertex3(vertex3)
+	, m_outlineColor(outlineColor)
+	, m_fillColor(fillColor)
 { }
 
 double CTriangle::GetPerimeter() const
@@ -71,22 +87,45 @@ void CTriangle::SetOutlineColor(uint32_t newColor)
 double CTriangle::GetArea() const
 {
 	double half_perimeter = GetPerimeter() / 2;
-	return sqrt(half_perimeter * (half_perimeter - GetSide12()) * (half_perimeter - GetSide23()) * (half_perimeter - GetSide31()));
+
+	double AB = GetSide12();
+	double BC = GetSide23();
+	double AC = GetSide31();
+
+	return sqrt(half_perimeter * (half_perimeter - AB) * (half_perimeter - BC) * (half_perimeter - AC));
 }
 
 double CTriangle::GetSide12() const
 {
-	return sqrt(pow(m_vertex2.GetX() - m_vertex1.GetX(), 2) + pow(m_vertex2.GetY() - m_vertex1.GetY(), 2));
+	double Ax = m_vertex1.GetX();
+	double Ay = m_vertex1.GetY();
+
+	double Bx = m_vertex2.GetX();
+	double By = m_vertex2.GetY();
+
+	return sqrt(pow(Bx - Ax, 2) + pow(By - Ay, 2));
 }
 
 double CTriangle::GetSide23() const
 {
-	return sqrt(pow(m_vertex3.GetX() - m_vertex2.GetX(), 2) + pow(m_vertex3.GetY() - m_vertex2.GetY(), 2));
+	double Ax = m_vertex3.GetX();
+	double Ay = m_vertex3.GetY();
+
+	double Bx = m_vertex2.GetX();
+	double By = m_vertex2.GetY();
+
+	return sqrt(pow(Bx - Ax, 2) + pow(By - Ay, 2));
 }
 
 double CTriangle::GetSide31() const
 {
-	return sqrt(pow(m_vertex3.GetX() - m_vertex1.GetX(), 2) + pow(m_vertex3.GetY() - m_vertex1.GetY(), 2));
+	double Ax = m_vertex1.GetX();
+	double Ay = m_vertex1.GetY();
+
+	double Bx = m_vertex3.GetX();
+	double By = m_vertex3.GetY();
+
+	return sqrt(pow(Bx - Ax, 2) + pow(By - Ay, 2));
 }
 
 string CTriangle::ToString() const
@@ -96,8 +135,8 @@ string CTriangle::ToString() const
 	outputStream << "Координаты вершины 1: (" << to_string(m_vertex1.GetX()) << " ; " << to_string(m_vertex1.GetY()) << ");" << endl;
 	outputStream << "Координаты вершины 2: (" << to_string(m_vertex2.GetX()) << " ; " << to_string(m_vertex2.GetY()) << ");" << endl;
 	outputStream << "Координаты вершины 3: (" << to_string(m_vertex3.GetX()) << " ; " << to_string(m_vertex3.GetY()) << ");" << endl;
-	outputStream << "Площадь: " << to_string(GetArea()) << ";" << endl;
-	outputStream << "Периметр: " << to_string(GetPerimeter()) << ";" << endl;
+	outputStream << "Площадь: " << setprecision(3) << fixed << to_string(GetArea()) << ";" << endl;
+	outputStream << "Периметр: " << setprecision(3) << fixed << to_string(GetPerimeter()) << ";" << endl;
 	outputStream << "Цвет обводки: " << setfill('0') << setw(8) << hex << m_outlineColor << ";" << endl;
 	outputStream << "Цвет заливки: " << setfill('0') << setw(8) << hex << m_fillColor << ";" << endl;
 

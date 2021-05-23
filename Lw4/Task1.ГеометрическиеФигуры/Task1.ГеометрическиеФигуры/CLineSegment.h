@@ -20,7 +20,7 @@ public:
 	void SetEndPoint(CPoint newEndPoint);
 	void SetOutlineColor(uint32_t newColor);
 private:
-	uint32_t m_outlineColor = 0xFF000000;
+	uint32_t m_outlineColor = 0xFF0000;
 	CPoint m_startPoint;
 	CPoint m_endPoint;
 };

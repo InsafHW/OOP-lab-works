@@ -12,6 +12,7 @@ using namespace std;
 class CComplex
 {
 public:
+	CComplex() = default;
 	CComplex(double real, double image);
 	double Re() const;
 	double Im() const;
@@ -40,6 +41,8 @@ public:
 private:
 	double m_real = 0;
 	double m_image = 0;
+
+	string ERROR_DIVIDE_ZERO = "Ошибка - на 0 делить нельзя";
 };
 
 CComplex const operator *(double scalar, CComplex const& complex);

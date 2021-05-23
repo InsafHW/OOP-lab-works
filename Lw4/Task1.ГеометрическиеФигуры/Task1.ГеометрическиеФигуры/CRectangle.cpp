@@ -6,6 +6,21 @@ CRectangle::CRectangle(CPoint leftTop, double width, double height)
 	, m_height(height)
 { }
 
+CRectangle::CRectangle(CPoint leftTop, double width, double height, uint32_t outlineColor)
+	: m_leftTop(leftTop)
+	, m_width(width)
+	, m_height(height)
+	, m_outlineColor(outlineColor)
+{ }
+
+CRectangle::CRectangle(CPoint leftTop, double width, double height, uint32_t outlineColor, uint32_t fillColor)
+	: m_leftTop(leftTop)
+	, m_width(width)
+	, m_height(height)
+	, m_outlineColor(outlineColor)
+	, m_fillColor(fillColor)
+{ }
+
 double CRectangle::GetArea() const
 {
 	return m_width * m_height;
@@ -49,7 +64,7 @@ CPoint CRectangle::GetLeftTop() const
 
 CPoint CRectangle::GetRightBottom() const
 {
-	return { m_leftTop.GetX() + m_width, m_leftTop.GetY() + m_height };
+	return CPoint(m_leftTop.GetX() + m_width, m_leftTop.GetY() + m_height);
 }
 
 double CRectangle::GetWidth() const

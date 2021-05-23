@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{14d4208c-e308-4ba2-b2c0-840a809c5100}</ProjectGuid>
-    <RootNamespace>Task1tests</RootNamespace>
+    <ProjectGuid>{4bb6dae4-b0e9-4f35-b3bb-4dd7707e76d0}</ProjectGuid>
+    <RootNamespace>Task7</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -139,23 +139,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Task1.ГеометрическиеФигуры\CCircle.cpp" />
-    <ClCompile Include="..\Task1.ГеометрическиеФигуры\CLineSegment.cpp" />
-    <ClCompile Include="..\Task1.ГеометрическиеФигуры\CPoint.cpp" />
-    <ClCompile Include="..\Task1.ГеометрическиеФигуры\CRectangle.cpp" />
-    <ClCompile Include="..\Task1.ГеометрическиеФигуры\CShapeController.cpp" />
-    <ClCompile Include="..\Task1.ГеометрическиеФигуры\CTriangle.cpp" />
-    <ClCompile Include="..\Task1.ГеометрическиеФигуры\IShape.cpp" />
-    <ClCompile Include="Task1_tests.cpp" />
+    <ClCompile Include="Sportsman.cpp" />
+    <ClCompile Include="Task7.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Task1.ГеометрическиеФигуры\CCircle.h" />
-    <ClInclude Include="..\Task1.ГеометрическиеФигуры\CLineSegment.h" />
-    <ClInclude Include="..\Task1.ГеометрическиеФигуры\CPoint.h" />
-    <ClInclude Include="..\Task1.ГеометрическиеФигуры\CRectangle.h" />
-    <ClInclude Include="..\Task1.ГеометрическиеФигуры\CShapeController.h" />
-    <ClInclude Include="..\Task1.ГеометрическиеФигуры\CTriangle.h" />
-    <ClInclude Include="..\Task1.ГеометрическиеФигуры\IShape.h" />
+    <ClInclude Include="FindMaxEx.h" />
+    <ClInclude Include="Sportsman.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
